@@ -32,7 +32,7 @@ install() {
     echo
 
     mkdir -p "$HOOK_DIR"
-    cp -i "$0" "$HOOK_DIR/hook.sh"
+    cp -i "$source" "$HOOK_DIR/hook.sh"
 
     echo "Installing hooks"
     echo
@@ -59,7 +59,7 @@ hook() {
         if [ -d "$dir" ]
         then
             find "$dir" -depth 2 -and -name "$script" -print0 2>/dev/null \
-                | xargs -0 -n1 -I_ sh -c "if [ -x \"\$1\" ]; then echo \"\n## \$(basename \"\$(dirname \"\$1\")\")\n\" && exec \"\$@\" < \"$input\"; fi" -- _ "$@"
+                | xargs -0 -n1 -I_ sh -c "if [ -x \"\$1\" ]; then printf \"\\n## \$(basename \"\$(dirname \"\$1\")\")\\n\" && exec \"\$@\" < \"$input\"; fi" -- _ "$@"
             retval="$?"
 
             if [ ! "$retval" -eq 0 ]
@@ -73,7 +73,7 @@ hook() {
 case "$1" in
     install)
         shift
-        install
+        install "$@"
         exit
         ;;
     help|-h|--help|version|-v|-V|--version)
