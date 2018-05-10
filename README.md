@@ -53,3 +53,5 @@ fired all hooks are traversed and ran.
 ## License
 
 See [LICENSE](LICENSE).
+
+[git-hooks]: https://git-scm.com/docs/githooks
