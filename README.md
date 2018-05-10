@@ -1,7 +1,7 @@
 # Git riff
 
-Super simple [Git hooks][git-hooks] launcher. It doesn't manage hooks basing on
-some file, it just launch them. So this is more suitable for managing personal
+Super simple [Git hooks][git-hooks] launcher.  It doesn't manage hooks basing on
+some file, it just launch them.  So this is more suitable for managing personal
 set of hooks instead of managing hooks on organization level.
 
 ## Installation
@@ -11,7 +11,7 @@ Just like this:
 
     ./git-riff install
 
-And it is done. If you have some hooks already then you can skip `git-riff` from
+And it is done.  If you have some hooks already then you can skip `git-riff` from
 overwriting them by running it like that:
 
     yes n | ./git-riff install
