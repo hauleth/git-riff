@@ -51,7 +51,8 @@ hook() {
     test -d "$GIT_DIR"/rebase-merge -o -d "$GIT_DIR"/rebase-apply && exit 0
 
     input="$(mktemp)"
-    trap "{ rm -f '$input' }" EXIT
+    touch "$input"
+    trap '{ rm -f "$input"; }' EXIT
     cat - > "$input"
 
     for dir in "${PLUG_DIRS[@]}"
@@ -59,7 +60,7 @@ hook() {
         if [ -d "$dir" ]
         then
             find "$dir" -depth 2 -and -name "$script" -print0 2>/dev/null \
-                | xargs -0 -n1 -I_ sh -c "if [ -x \"\$1\" ]; then printf \"\\n## \$(basename \"\$(dirname \"\$1\")\")\\n\" && exec \"\$@\" < \"$input\"; fi" -- _ "$@"
+                | xargs -0 -n1 -I% sh -c 'input="$1"; shift; if [ -x "$1" ]; then printf "\n## $(basename "$(dirname "$1")")\n" && exec "$@" < "$input"; fi' -- "$input" % "$@"
             retval="$?"
 
             if [ ! "$retval" -eq 0 ]
