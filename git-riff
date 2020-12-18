@@ -1,4 +1,5 @@
 #!/bin/bash
+# vi: expandtab sw=4
 
 hooks=(post-checkout post-commit post-merge pre-commit pre-push prepare-commit-msg)
 
@@ -45,10 +46,11 @@ install() {
 }
 
 hook() {
+    git_dir=$(git rev-parse --git-dir)
     script="$(basename "$0")"
-    PLUG_DIRS=("$(command git config --global --get hooks.path)" "$GIT_DIR/hooks/hooks.d" "$(command git config --worktree --get hooks.path)")
+    PLUG_DIRS=("$(command git config --global --get hooks.path)" "$git_dir/hooks/hooks.d" "$(command git config --worktree --get hooks.path)")
 
-    test -d "$GIT_DIR"/rebase-merge -o -d "$GIT_DIR"/rebase-apply && exit 0
+    test -d "$git_dir"/rebase-merge -o -d "$git_dir"/rebase-apply && exit 0
 
     input="$(mktemp)"
     touch "$input"
