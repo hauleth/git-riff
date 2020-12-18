@@ -46,7 +46,7 @@ install() {
 
 hook() {
     script="$(basename "$0")"
-    PLUG_DIRS=("$(command git config --get hooks.path)" "$GIT_DIR/hooks/hooks.d")
+    PLUG_DIRS=("$(command git config --global --get hooks.path)" "$GIT_DIR/hooks/hooks.d" "$(command git config --worktree --get hooks.path)")
 
     test -d "$GIT_DIR"/rebase-merge -o -d "$GIT_DIR"/rebase-apply && exit 0
 
@@ -59,8 +59,8 @@ hook() {
     do
         if [ -d "$dir" ]
         then
-            find "$dir" -depth 2 -and -name "$script" -print0 2>/dev/null \
-                | xargs -0 -n1 -I% sh -c 'input="$1"; shift; if [ -x "$1" ]; then printf "\n## $(basename "$(dirname "$1")")\n" && exec "$@" < "$input"; fi' -- "$input" % "$@"
+            find "$dir" -maxdepth 2 -and -name "$script" -print0 2>/dev/null \
+                | xargs -0 -n1 -I% sh -c 'input="$1"; shift; if [ -x "$1" ]; then printf "\n## $(basename "$(dirname "$1")")\n" && "$@" < "$input" && echo ok; fi' -- "$input" % "$@"
             retval="$?"
 
             if [ ! "$retval" -eq 0 ]
