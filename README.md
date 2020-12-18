@@ -50,6 +50,24 @@ So you create directory named `foo` in `.git/hooks/hooks.d` and there you create
 executable files that are exactly the same as any other hooks and when hook is
 fired all hooks are traversed and ran.
 
+If you want to share your hooks as part of the project then you can create
+directory in your project that will have the same structure as `hooks.d`
+mentioned above, ex.:
+
+```
+.
+└── hooks
+   └── lint
+       └── pre-commit
+```
+
+And then tell `git-riff` to check this directory via setting local configuration
+option:
+
+```
+git config --local hooks.path $PWD/hooks
+```
+
 ## License
 
 See [LICENSE](LICENSE).
